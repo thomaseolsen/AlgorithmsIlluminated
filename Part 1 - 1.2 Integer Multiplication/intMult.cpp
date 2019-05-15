@@ -1,10 +1,6 @@
 #include <chrono>
-#include <cmath>
 #include <iostream>
-#include <string>
-#include <vector>
-
-using namespace std;
+#include "intMult.h"
 
 void CollectDigits(vector<int>& digits, long long num) {
     if (num > 9) {
@@ -13,7 +9,7 @@ void CollectDigits(vector<int>& digits, long long num) {
     digits.push_back(num % 10);
 }
 
-int MultiplyGradeSchoolAlgorithm(int x, int y)
+long MultiplyGradeSchoolAlgorithm(int x, int y)
 {
     vector<int> yDigits;
     CollectDigits(yDigits, y);
@@ -31,8 +27,9 @@ int MultiplyGradeSchoolAlgorithm(int x, int y)
         }
         else
         {
-            retVal += x & yCurr;
+            retVal += x * yCurr;
         }
+        place++;
     }
 
     return retVal;
@@ -52,18 +49,18 @@ int main(int argc, char *argv[]) {
     }
 
     auto t1 = chrono::high_resolution_clock::now();
-    int result = x * y;
+    long long result = x * y;
     auto t2 = chrono::high_resolution_clock::now();
     cout << "Base C++ multiplication took "
-              << chrono::duration_cast<chrono::milliseconds>(t2-t1).count()
-              << " milliseconds to return " << result << "\n";
+              << chrono::duration_cast<chrono::nanoseconds>(t2-t1).count()
+              << " nanoseconds to return " << result << "\n";
 
     t1 = chrono::high_resolution_clock::now();
     result = MultiplyGradeSchoolAlgorithm(x, y);
     t2 = chrono::high_resolution_clock::now();
     cout << "Grade School multiplication took "
-              << chrono::duration_cast<chrono::milliseconds>(t2-t1).count()
-              << " milliseconds to return " << result << "\n";
+              << chrono::duration_cast<chrono::nanoseconds>(t2-t1).count()
+              << " nanoseconds to return " << result << "\n";
 
     return 0;
 }
