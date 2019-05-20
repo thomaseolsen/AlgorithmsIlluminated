@@ -1,5 +1,4 @@
 #include <chrono>
-#include <iostream>
 #include "intMult.h"
 
 int main(int argc, char *argv[]) {
@@ -183,7 +182,6 @@ long RecursiveAlgorithm(vector<int> xDigits, vector<int> yDigits) {
 }
 
 long RecursiveAlgorithm(int x, int y) {
-    int place = 0;
     int xSize = GetIntegerLength(x);
     int ySize = GetIntegerLength(y);
     int n = xSize > ySize ? xSize : ySize; // Max size
@@ -191,7 +189,6 @@ long RecursiveAlgorithm(int x, int y) {
     long long ad = 0;
     long long bc = 0;
     long long bd = 0;
-    long long retVal = 0;
 
     // First if statements is our base case.
     // We are going to define our base C++ multiplication as when either x or y reaches a single-digit length.
@@ -221,12 +218,50 @@ long RecursiveAlgorithm(int x, int y) {
         // 10^n * ac + 10^(n/2) * (ad + bc) + bd
         return pow(10, n) * ac + pow(10, n / 2) * (ad + bc) + bd;
     }
-
-    return retVal;
 }
 
 long KaratsubaAlgorithm(int x, int y) {
-    long long retVal = 0;
+    int xSize = GetIntegerLength(x);
+    int ySize = GetIntegerLength(y);
+    int n = xSize > ySize ? xSize : ySize; // Max size
+    int abcd[4] = {0, 0, 0, 0};
+    long long ac = 0;
+    long long bd = 0;
+    long long pq = 0;
 
-    return retVal;
+    // First if statements is our base case.
+    // We are going to define our base C++ multiplication as when either x or y reaches a single-digit length.
+    if (xSize == 1 || ySize == 1) {
+        return x * y;
+    }
+    else {
+        if (xSize >= ySize * 2) {
+            abcd[0] = (x / (int)pow(10, n/2));
+            abcd[1] = (x % (int)pow(10, n/2));
+            abcd[3] = (y % (int)pow(10, n/2));
+            ac = 0;
+            bd = KaratsubaAlgorithm(abcd[1], abcd[3]);
+            pq = KaratsubaAlgorithm((abcd[0] + abcd[1]), abcd[3]);
+        }
+        else if (ySize >= xSize * 2) {
+            abcd[1] = (x % (int)pow(10, n/2));
+            abcd[2] = (y / (int)pow(10, n/2));
+            abcd[3] = (y % (int)pow(10, n/2));
+            ac = 0;
+            bd = KaratsubaAlgorithm(abcd[1], abcd[3]);
+            pq = KaratsubaAlgorithm(abcd[1], (abcd[2] + abcd[3]));
+        }
+        else {
+            abcd[0] = (x / (int)pow(10, n/2));
+            abcd[1] = (x % (int)pow(10, n/2));
+            abcd[2] = (y / (int)pow(10, n/2));
+            abcd[3] = (y % (int)pow(10, n/2));
+            ac = KaratsubaAlgorithm(abcd[0], abcd[2]);
+            bd = KaratsubaAlgorithm(abcd[1], abcd[3]);
+            pq = KaratsubaAlgorithm((abcd[0] + abcd[1]), (abcd[2] + abcd[3]));
+        }
+
+        // 10^n * ac + 10^(n/2) * (pq - ac - bd) + bd
+        return pow(10, n) * ac + pow(10, n / 2) * (pq - ac - bd) + bd;
+    }
 }

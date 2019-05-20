@@ -64,7 +64,7 @@ def recursiveMultiplicationPrint(x, y):
   t1 = time.perf_counter_ns()
   result = recursiveMultiplication(x, y)
   t2 = time.perf_counter_ns()
-  print ("Grade School ALgorithm multiplication took " + str(t2 - t1) + " nanoseconds to return " + str(result) + ".")
+  print ("Recursive multiplication took " + str(t2 - t1) + " nanoseconds to return " + str(result) + ".")
 
 def main():
   if len(sys.argv) < 2:

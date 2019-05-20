@@ -5,6 +5,13 @@ Because I'm utilizing "auto" typing for the timestamps in the main function, I n
 ### Python
 Due to a project assignment at work, it looks like I'll be working in Python a fair bit. I'm going to start working through these algorithms in both C++ and Python, though probably with a preference for Python to learn the language and syntax. I'm using a nanosecond timer that requires Python 3.7 or greater, so that should be noted when attempting to run these scripts.
 
+||Algorithm                 |  C++  |Python||
+|Language Base              |  100ns|  1000ns|
+|Grade School               |26000ns| 11000ns|
+|Recursive Multiplication v1|27000ns|116000ns|
+|Recursive Multiplication v2| 2800ns|   na   |
+|Karatsuba Multiplication   |       |        |
+
 ## Language Base Algorithm
 ### C++
 I am utilizing the C++ multiplication method as my baseline. I'm hoping that working through these exercises I may get close to it in performance. The latency is so quick it forced me to require nanosecond precision with my timers.
@@ -37,6 +44,8 @@ This was the last algorithm already written and working in C++ when I switched t
 In trying to remove the unecessary lag I introduced in this algorithm, I found that changing from (len(str(x))) to (int(math.log10(x)) + 1) reduced lag by a full 1/3 (82533ns). This is the fist step in making Python comparable to C++ in this algorithm. I found this little hack online, and it's quite ingenious. I'll have to remember it for other times I may need this information.
 
 Taking it a small step further, I removed the string array and integer back and forth. Utilizing division and modulus, I can achieve a little more speed (71292ns). I'm going to dig a little more to see what else could possibly be cleaned up.
+
+Doing some more digging, I've found that Python (specifically the CPython implementation) has an upper limit to recursion. While the limit is high enough to handle this simple algorithm, some of the performance enhancements I have tried end up triggering the maximum recursion limit and halting the calculation. I'm going to call this implementation done at this stage and move forward. From now on, we will be utilizing recursion sparingly, and when possible not at all in the Python implementations.
 
 Complexity of this algorithm is O(nlog(n)) (I think). I grant O(log(n)) for the recursive action of dividing the work in half each time, however I don't think you can ignore all of the calls that translate integers to string arrays and string arrays back to integers. While each one itself would be O(n) and there are a lot of them, they're still not nested, so we'll stick with O(nlog(n)).
 
